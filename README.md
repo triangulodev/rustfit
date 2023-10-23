@@ -19,15 +19,27 @@ _Initial flow to setup an account on Rustfit._
 
 [MS] As an owner, manage my account.
 
+---
+
 [MS] As an owner, add staff, be sure staff can't change important details about the account. Staff should have their own access credentials.
+
+---
 
 [MU] As an owner, invite users. Users are people that I provide a fitness service to.
 
+---
+
 [C] As an owner, manage locations.
+
+---
 
 [C] As an owner, create classes. Classes have a name, schedule, teacher (User), location, size.
 
+---
+
 [C] As a user, join a class. Classes should be joined daily.
+
+---
 
 [C] As staff or above, remove users from class.
 

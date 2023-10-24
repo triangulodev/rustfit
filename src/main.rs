@@ -10,5 +10,7 @@ fn index() -> &'static str {
 
 #[launch]
 fn rocket() -> _ {
-    rocket::build().mount("/", routes![index, handlers::account::post_user])
+    rocket::build()
+        .mount("/", routes![index,])
+        .mount("/api", routes![handlers::account::post_user])
 }

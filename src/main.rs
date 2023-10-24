@@ -1,16 +1,26 @@
-mod handlers;
+use axum::{
+    http::StatusCode,
+    response::IntoResponse,
+    routing::{get, post},
+    Json, Router,
+};
 
-#[macro_use]
-extern crate rocket;
+use serde::{Deserialize, Serialize};
+use std::net::SocketAddr;
 
-#[get("/")]
-fn index() -> &'static str {
-    "Rustfit"
+#[tokio::main]
+async fn main() {
+    tracing_subscriber::fmt::init();
+    let app = Router::new().route("/", get(root));
+
+    let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
+    tracing::info!("listening on {}", addr);
+    axum::Server::bind(&addr)
+        .serve(app.into_make_service())
+        .await
+        .unwrap();
 }
 
-#[launch]
-fn rocket() -> _ {
-    rocket::build()
-        .mount("/", routes![index,])
-        .mount("/api", routes![handlers::account::post_user])
+async fn root() -> &'static str {
+    "Rustfit"
 }

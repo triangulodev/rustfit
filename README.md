@@ -19,6 +19,10 @@ _Initial flow to setup an account on Rustfit._
 
 [MS] As an owner, manage my account.
 
+- Create an account with login credentials.
+- Set account access to user
+- Set user as admin role.
+
 ---
 
 [MS] As an owner, add staff, be sure staff can't change important details about the account. Staff should have their own access credentials.

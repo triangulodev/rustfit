@@ -2,6 +2,25 @@
 
 Fitness studio management SaaS.
 
+## Technical Decisions
+
+### Decisions and Alternatives
+
+Rust is the programming language.
+This decision is based on my wish to learn and explore the language. We can
+also justify using Rust because of the small binary and closer to the metal
+code it compiles to. Rust's type system is also a great tool.
+
+Axum is the web application framework.
+As it is just a thin layer on top of tokio, our async runtime for Rust.
+
+sqlite is the database.
+Because of its simplicity and ease of deployment.
+
+sqlx is the SQL toolkit of choice.
+We've decided not to use an ORM to keep the project flexible and simple using
+SQL directly.
+
 ## Project
 
 > A story is a simple narrative that describes an end user in some domain-level role going through some domain-level process to achieve a domain-level, and valuable, outcome. It does not describe a computer program. — https://holub.com/reading/

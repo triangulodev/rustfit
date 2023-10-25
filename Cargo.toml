@@ -7,8 +7,9 @@ edition = "2021"
 
 [dependencies]
 axum = "0.5.11"
-tokio = { version = "1.0", features = ["full"] }
+tokio = { version = "1.24.2", features = ["full"] }
 tracing = "0.1.35"
 tracing-subscriber = "0.3.14"
-serde = { version = "1.0.138", features = ["derive"] }
-serde_json = "1.0"
+serde = { version = "1.0.184", features = ["derive"] }
+serde_json = "1.0.74"
+sqlx = { version = "0.7.1", features = [ "runtime-tokio-rustls", "sqlite", "migrate" ] }

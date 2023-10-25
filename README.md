@@ -4,6 +4,8 @@ Fitness studio management SaaS.
 
 ## Technical Decisions
 
+_Based on [ideas by Yegor Bugayenko](https://www.yegor256.com/2015/08/04/nine-steps-start-software-project.html)_
+
 ### Decisions and Alternatives
 
 Rust is the programming language.
@@ -20,6 +22,12 @@ Because of its simplicity and ease of deployment.
 sqlx is the SQL toolkit of choice.
 We've decided not to use an ORM to keep the project flexible and simple using
 SQL directly.
+
+### Concerns
+
+### Assumptions
+
+### Risks
 
 ## Project
 

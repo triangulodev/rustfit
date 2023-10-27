@@ -23,6 +23,8 @@ WORKDIR /app
 # Get compiled binaries from builder's cargo install directory
 COPY --from=builder /usr/src/app/rustfit /app/rustfit
 
+EXPOSE 8080
+
 # Run the app
 ENV DATABASE_URL="sqlite:./rustfit.sqlite?mode=rwc"
 ENV PORT="8080"

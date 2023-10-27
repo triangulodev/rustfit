@@ -36,19 +36,10 @@ port = "80"
 handlers = ["tls", "http"]
 port = "443"
 
-[[services.http_checks]]
-interval = 10000
-grace_period = "5s"
-method = "get"
-path = "/health"
-protocol = "https"
-timeout = 2000
-tls_skip_verify = false
-[services.http_checks.headers]
-
-[[services.tcp_checks]]
-grace_period = "1s"
-interval = "15s"
-port = "8080"
-restart_limit = 6
-timeout = "2s"
+[checks]
+  [checks.status]
+    port = 8080
+    type = "http"
+    path = "/health"
+    interval = "10s"
+    timeout = "2s"

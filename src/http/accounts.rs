@@ -1,5 +1,5 @@
 use crate::http::{ApiContext, Result};
-use crate::models::account::Account;
+use crate::models::account::AccountDTO;
 use crate::models::account::NewAccount;
 use axum::extract::State;
 use axum::routing::post;
@@ -17,7 +17,7 @@ struct AccountBody<T> {
 async fn create_account(
     ctx: State<ApiContext>,
     Json(req): Json<AccountBody<NewAccount>>,
-) -> Result<Json<AccountBody<Account>>> {
+) -> Result<Json<AccountBody<AccountDTO>>> {
     let account = ctx.store.account().create_account(req.account).await?;
 
     Ok(Json(AccountBody { account }))

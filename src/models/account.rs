@@ -27,7 +27,7 @@ pub struct Account {
 }
 
 #[derive(serde::Serialize, serde::Deserialize, sqlx::FromRow)]
-pub struct AccountBody {
+pub struct AccountDTO {
     pub id: Uuid,
     pub email: String,
     pub name: String,
@@ -49,18 +49,18 @@ impl AccountController {
 pub type DynAccountCtrl = Arc<dyn AccountCtrlTrait + Send + Sync>;
 #[async_trait]
 pub trait AccountCtrlTrait {
-    async fn create_account(&self, new_account: NewAccount) -> Result<AccountBody>;
+    async fn create_account(&self, new_account: NewAccount) -> Result<AccountDTO>;
 }
 
 #[async_trait]
 impl AccountCtrlTrait for AccountController {
-    async fn create_account(&self, new_account: NewAccount) -> Result<AccountBody> {
+    async fn create_account(&self, new_account: NewAccount) -> Result<AccountDTO> {
         let id = uuid::Uuid::new_v4();
         let password_hash = Account::hash_password(new_account.password.clone()).await?;
         let inserted_at = time::OffsetDateTime::now_utc();
 
         let account = sqlx::query_as!(
-            AccountBody,
+            AccountDTO,
             r#"insert into "accounts" (
                 id, name, email, password_hash,
                 inserted_at, updated_at

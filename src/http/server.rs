@@ -1,5 +1,6 @@
 use crate::config::Config;
 use crate::http::accounts;
+use crate::http::health;
 use crate::http::ApiContext;
 use crate::models::DynStore;
 use crate::models::Store;
@@ -34,5 +35,6 @@ fn api_router(api_context: ApiContext) -> Router {
     // This is the order that the modules were authored in.
     Router::new()
         .merge(accounts::router())
+        .merge(health::router())
         .with_state(api_context)
 }

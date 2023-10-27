@@ -1,6 +1,7 @@
 mod error;
 
 pub mod accounts;
+pub mod health;
 
 pub mod server;
 pub use server::serve;

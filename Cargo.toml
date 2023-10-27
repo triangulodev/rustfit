@@ -2,14 +2,27 @@
 name = "rustfit"
 version = "0.2.0"
 edition = "2021"
+publish = false
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-axum = "0.5.11"
-tokio = { version = "1.24.2", features = ["full"] }
+axum = "0.6.16"
+tokio = { version = "1.25.0", features = ["full"] }
 tracing = "0.1.35"
 tracing-subscriber = "0.3.14"
 serde = { version = "1.0.184", features = ["derive"] }
+sqlx = { version = "0.7.1", features = [ "runtime-tokio-rustls", "sqlite", "migrate", "uuid", "time" ] }
+clap = { version = "4.0.0", features = ["derive", "env"] }
+
+argon2 = "0.5"
+rand = "0.8.4"
+
+uuid = { version = "1.0", features = ["v4", "serde"] }
+dotenvy = "0.15"
+anyhow = "1.0.48"
 serde_json = "1.0.74"
-sqlx = { version = "0.7.1", features = [ "runtime-tokio-rustls", "sqlite", "migrate" ] }
+thiserror = "1.0.30"
+async-trait = "0.1.51"
+time = { version = "0.3.30", features = ["serde-human-readable"] }
+

@@ -17,13 +17,13 @@ pub struct NewAccount {
 }
 
 #[derive(serde::Serialize, serde::Deserialize, sqlx::FromRow)]
-pub struct Account {
-    pub id: Uuid,
-    pub email: String,
-    pub name: String,
-    pub password_hash: String,
-    pub inserted_at: OffsetDateTime,
-    pub updated_at: OffsetDateTime,
+struct Account {
+    id: Uuid,
+    email: String,
+    name: String,
+    password_hash: String,
+    inserted_at: OffsetDateTime,
+    updated_at: OffsetDateTime,
 }
 
 #[derive(serde::Serialize, serde::Deserialize, sqlx::FromRow)]

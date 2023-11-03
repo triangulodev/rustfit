@@ -50,14 +50,23 @@ _Initial flow to setup an account on Rustfit._
   - Frequency: Once
   - Value: Critical
   - Technical details: Set account access to user. Set user as admin role.
+- Login account with login credentials.
 
 ---
 
 [MS] As an owner, add staff, be sure staff can't change important details about the account. Staff should have their own access credentials.
 
+- Implement sessions so accounts can continue logged in
+- Implement Organization, which roles will be assigned to
+- Create role for an account. There can only be a single account role per Organization.
+
 ---
 
 [MU] As an owner, invite users. Users are people that I provide a fitness service to.
+
+- Create an invite token which will be assigned to the user
+
+[MU] As a user, create account when invited.
 
 ---
 

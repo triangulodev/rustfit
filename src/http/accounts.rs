@@ -1,6 +1,6 @@
 use crate::http::{ApiContext, Result};
 use crate::models::account::AccountDTO;
-use crate::models::account::AccountWithTokenDTO;
+use crate::models::account::AccountWithAccountSessionDTO;
 use crate::models::account::LoginCredentials;
 use crate::models::account::NewAccount;
 use axum::extract::State;
@@ -30,7 +30,7 @@ async fn create_account(
 async fn login_account(
     ctx: State<ApiContext>,
     Json(credentials): Json<LoginCredentials>,
-) -> Result<Json<AccountBody<AccountWithTokenDTO>>> {
+) -> Result<Json<AccountBody<AccountWithAccountSessionDTO>>> {
     let account = ctx.store.account().login_account(credentials).await?;
 
     Ok(Json(AccountBody { account }))

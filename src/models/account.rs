@@ -9,6 +9,8 @@ use sqlx::SqlitePool;
 use time::OffsetDateTime;
 use uuid::Uuid;
 
+use super::account_session;
+
 #[derive(serde::Deserialize)]
 pub struct NewAccount {
     pub name: String,
@@ -42,11 +44,11 @@ pub struct AccountDTO {
 }
 
 #[derive(serde::Serialize, serde::Deserialize, sqlx::FromRow)]
-pub struct AccountWithTokenDTO {
+pub struct AccountWithAccountSessionDTO {
     pub id: Uuid,
     pub email: String,
     pub name: String,
-    pub token: String,
+    pub account_session_id: Uuid,
     pub inserted_at: OffsetDateTime,
     pub updated_at: OffsetDateTime,
 }
@@ -64,11 +66,18 @@ pub struct AccountWithPasswordHashDTO {
 #[derive(Clone)]
 pub struct AccountController {
     pool: SqlitePool,
+    dyn_account_session_ctrl: account_session::DynAccountSessionCtrl,
 }
 
 impl AccountController {
-    pub fn new(pool: SqlitePool) -> Self {
-        Self { pool }
+    pub fn new(
+        pool: SqlitePool,
+        dyn_account_session_ctrl: account_session::DynAccountSessionCtrl,
+    ) -> Self {
+        Self {
+            pool,
+            dyn_account_session_ctrl,
+        }
     }
 }
 
@@ -76,7 +85,10 @@ pub type DynAccountCtrl = Arc<dyn AccountCtrlTrait + Send + Sync>;
 #[async_trait]
 pub trait AccountCtrlTrait {
     async fn create_account(&self, new_account: NewAccount) -> Result<AccountDTO>;
-    async fn login_account(&self, credentials: LoginCredentials) -> Result<AccountWithTokenDTO>;
+    async fn login_account(
+        &self,
+        credentials: LoginCredentials,
+    ) -> Result<AccountWithAccountSessionDTO>;
 
     async fn get_account_by_email(&self, email: String) -> Result<AccountWithPasswordHashDTO>;
 }
@@ -112,22 +124,29 @@ impl AccountCtrlTrait for AccountController {
         Ok(account)
     }
 
-    async fn login_account(&self, login_account: LoginCredentials) -> Result<AccountWithTokenDTO> {
+    async fn login_account(
+        &self,
+        login_account: LoginCredentials,
+    ) -> Result<AccountWithAccountSessionDTO> {
         let account = &self.get_account_by_email(login_account.email).await?;
 
         Account::verify_password(login_account.password, account.password_hash.clone()).await?;
 
-        // FIXME: token is not supposed to be a random string, should actually be safe and attached
-        // to a session.
-        let token = rand::random::<u32>().to_string();
-        // create token
-        // merge token to account
+        let account_session_create = account_session::AccountSessionCreate {
+            account_id: account.id,
+            expires_at: time::OffsetDateTime::now_utc(),
+        };
 
-        Ok(AccountWithTokenDTO {
+        let account_session = &self
+            .dyn_account_session_ctrl
+            .create_account_session(account_session_create)
+            .await?;
+
+        Ok(AccountWithAccountSessionDTO {
             id: account.id,
             name: account.name.clone(),
             email: account.email.clone(),
-            token,
+            account_session_id: account_session.id,
             inserted_at: account.inserted_at,
             updated_at: account.updated_at,
         })

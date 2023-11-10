@@ -72,11 +72,17 @@ impl AccountSessionCtrlTrait for AccountSessionController {
 
         let account_session = sqlx::query_as!(AccountSessionDTO, r#"
             insert into "account_sessions" (
-                id, account_id, expires_at, active, inserted_at, updated_at
+                id, account_id,
+                expires_at, active,
+                inserted_at,
+                updated_at
             ) VALUES (
                 $1, $2, $3, $4, $5, $6
             ) returning
-                id as "id: Uuid", account_id as "account_id: Uuid", expires_at as "expires_at: OffsetDateTime", active, inserted_at as "inserted_at: OffsetDateTime", updated_at as "updated_at: OffsetDateTime""#,
+                id as "id: Uuid", account_id as "account_id: Uuid",
+                expires_at as "expires_at: OffsetDateTime", active,
+                inserted_at as "inserted_at: OffsetDateTime",
+                updated_at as "updated_at: OffsetDateTime""#,
             id,
             account_session_create.account_id,
             expires_at,
